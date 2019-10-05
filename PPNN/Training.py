@@ -18,7 +18,7 @@ model.train(samples,cv2.ml.ROW_SAMPLE,responses)
 
 ############################# testing part  #########################
 
-im = cv2.imread('pi.png')
+im = cv2.imread('pi2.png')
 out = np.zeros(im.shape,np.uint8)
 gray = cv2.cvtColor(im,cv2.COLOR_BGR2GRAY)
 thresh = cv2.adaptiveThreshold(gray,255,1,1,11,2)
@@ -36,6 +36,7 @@ for cnt in contours:
             roismall = np.float32(roismall)
             retval, results, neigh_resp, dists = model.findNearest(roismall, k = 1)
             string = str(int((results[0][0])))
+            print(string, x)
             cv2.putText(out,string,(x,y+h),0,1,(0,255,0))
 
 cv2.imshow('im',im)
