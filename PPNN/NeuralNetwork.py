@@ -5,34 +5,24 @@ Created on Sat Oct  5 21:44:27 2019
 @author: User
 """
 
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.image as mpimg
-import seaborn as sns
-#%matplotlib inline
 
-np.random.seed(2)
+from SaveAndLoad import Load
+from Extra import NormalizeAndSplit
+from Model import SetModel, Train, Validate
+#If True,shows value distribution
+#X-pictures,Y-their identification
+X_train,Y_train=Load(False)
 
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import confusion_matrix
-import itertools
+def CheckData():
+    # Check the data
+    print(X_train.isnull().any().describe())
+    #print(test.isnull().any().describe())
+CheckData()
+    
+X_norm,X_val,Y_norm,Y_val = NormalizeAndSplit(X_train,Y_train)
+model = SetModel()  
+#ModelVizualize(model)
 
-from keras.utils.np_utils import to_categorical # convert to one-hot-encoding
-from keras.models import Sequential
-from keras.layers import Dense, Dropout, Flatten
-from keras.layers.convolutional import Conv2D, MaxPooling2D
-from keras.optimizers import RMSprop
-from keras.preprocessing.image import ImageDataGenerator
-from keras.callbacks import ReduceLROnPlateau
-
-train = pd.read_csv("C:/data/input/train.csv")
-test = pd.read_csv("C:/data/input/test.csv")
-
-Y_train = train["label"]
-# Drop 'label' column
-X_train = train.drop(labels = ["label"],axis = 1) 
-# free some space
-del train 
-g = sns.countplot(Y_train)
-Y_train.value_counts()
+#First paremeter =quantity of epochs to train NN
+history = Train(2, model,X_norm,X_val,Y_norm,Y_val)
+Validate(model,X_val,Y_val)
