@@ -25,4 +25,4 @@ model = SetModel()
 
 #First paremeter =quantity of epochs to train NN
 history = Train(2, model,X_norm,X_val,Y_norm,Y_val)
-Validate(model,X_val,Y_val)
+Y_pred, Y_pred_classes, Y_true= Validate(model,X_val,Y_val)

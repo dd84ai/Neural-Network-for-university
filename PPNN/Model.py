@@ -96,3 +96,17 @@ def Validate(model,X_val,Y_val):
     confusion_mtx = confusion_matrix(Y_true, Y_pred_classes) 
     # plot the confusion matrix
     plot_confusion_matrix(confusion_mtx, classes = range(10)) 
+    return Y_pred, Y_pred_classes, Y_true
+import pandas as pd
+def PredictUnknown(model,test):
+    # predict results
+    results = model.predict(test)
+    
+    # select the indix with the maximum probability
+    results = np.argmax(results,axis = 1)
+    
+    results = pd.Series(results,name="Label")
+    
+    submission = pd.concat([pd.Series(range(1,28001),name = "ImageId"),results],axis = 1)
+    
+    submission.to_csv("cnn_mnist_datagen.csv",index=False)
